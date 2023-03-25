@@ -7,6 +7,7 @@ part of flick_manager;
 class FlickControlManager extends ChangeNotifier {
   FlickControlManager({
     required FlickManager flickManager,
+    required bool this.pauseOnExitFullscreen,
   }) : _flickManager = flickManager;
 
   final FlickManager _flickManager;
@@ -31,6 +32,8 @@ class FlickControlManager extends ChangeNotifier {
       _flickManager.flickVideoManager!.videoPlayerController;
   bool get _isPlaying => _flickManager.flickVideoManager!.isPlaying;
 
+  bool pauseOnExitFullscreen;
+
   /// Enter full-screen.
   void enterFullscreen() {
     _isFullscreen = true;
@@ -48,6 +51,9 @@ class FlickControlManager extends ChangeNotifier {
         togglePlay();
         _notify();
       });
+    }
+    if (pauseOnExitFullscreen) {
+      pause();
     }
     _isFullscreen = false;
     _flickManager._handleToggleFullscreen();

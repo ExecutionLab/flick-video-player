@@ -20,11 +20,14 @@ class FlickManager {
     bool autoInitialize = true,
 
     /// Auto-play video once initialized.
-    bool autoPlay = true,
+    bool autoPlay = false,
+    /// Pause on exit full screen
+    bool pauseOnExitFullscreen = false,
   }) : this.getPlayerControlsTimeout =
             getPlayerControlsTimeout ?? getPlayerControlsTimeoutDefault {
     _flickControlManager = FlickControlManager(
       flickManager: this,
+      pauseOnExitFullscreen: pauseOnExitFullscreen,
     );
     _flickVideoManager = FlickVideoManager(
         flickManager: this, autoPlay: autoPlay, autoInitialize: autoInitialize);
