@@ -15,7 +15,7 @@ class FlickVideoWithControls extends StatefulWidget {
   const FlickVideoWithControls({
     Key? key,
     this.controls,
-    this.videoFit = BoxFit.cover,
+    this.videoFit = BoxFit.contain,
     this.playerLoadingFallback = const Center(
       child: CircularProgressIndicator(),
     ),
