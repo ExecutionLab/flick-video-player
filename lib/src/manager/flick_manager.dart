@@ -21,16 +21,18 @@ class FlickManager {
 
     /// Auto-play video once initialized.
     bool autoPlay = false,
+
     /// Pause on exit full screen
     bool pauseOnExitFullscreen = false,
-  }) : this.getPlayerControlsTimeout =
-            getPlayerControlsTimeout ?? getPlayerControlsTimeoutDefault {
+    Function? onVideoPlay,
+  }) : this.getPlayerControlsTimeout = getPlayerControlsTimeout ?? getPlayerControlsTimeoutDefault {
     _flickControlManager = FlickControlManager(
       flickManager: this,
       pauseOnExitFullscreen: pauseOnExitFullscreen,
+      onVideoPlay: onVideoPlay,
     );
-    _flickVideoManager = FlickVideoManager(
-        flickManager: this, autoPlay: autoPlay, autoInitialize: autoInitialize);
+    _flickVideoManager =
+        FlickVideoManager(flickManager: this, autoPlay: autoPlay, autoInitialize: autoInitialize);
     _flickDisplayManager = FlickDisplayManager(
       flickManager: this,
     );
@@ -44,6 +46,7 @@ class FlickManager {
 
   /// Video end callback, change the video in this callback.
   Function? onVideoEnd;
+  Function? onVideoPlay;
 
   /// Player controls auto-hide timeout callback, called when player state changes.
   ///
@@ -66,11 +69,9 @@ class FlickManager {
   /// Current playing video will be paused and disposed,
   /// if [videoChangeDuration] is passed video change will happen after that duration.
   handleChangeVideo(VideoPlayerController videoPlayerController,
-      {Duration? videoChangeDuration,
-      TimerCancelCallback? timerCancelCallback}) {
+      {Duration? videoChangeDuration, TimerCancelCallback? timerCancelCallback}) {
     _flickVideoManager!._handleChangeVideo(videoPlayerController,
-        videoChangeDuration: videoChangeDuration,
-        timerCancelCallback: timerCancelCallback);
+        videoChangeDuration: videoChangeDuration, timerCancelCallback: timerCancelCallback);
   }
 
   _handleToggleFullscreen() {

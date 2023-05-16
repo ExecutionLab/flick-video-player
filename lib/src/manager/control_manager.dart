@@ -8,6 +8,7 @@ class FlickControlManager extends ChangeNotifier {
   FlickControlManager({
     required FlickManager flickManager,
     required bool this.pauseOnExitFullscreen,
+    Function? this.onVideoPlay,
   }) : _flickManager = flickManager;
 
   final FlickManager _flickManager;
@@ -33,6 +34,8 @@ class FlickControlManager extends ChangeNotifier {
   bool get _isPlaying => _flickManager.flickVideoManager!.isPlaying;
 
   bool pauseOnExitFullscreen;
+
+  Function? onVideoPlay;
 
   /// Enter full-screen.
   void enterFullscreen() {
@@ -89,6 +92,10 @@ class FlickControlManager extends ChangeNotifier {
       _videoPlayerController!.setVolume(0);
     }
 
+    if (onVideoPlay != null) {
+      onVideoPlay!();
+    }
+
     await _videoPlayerController!.play();
     _flickManager.flickDisplayManager!.handleShowPlayerControls();
     _notify();
@@ -107,8 +114,7 @@ class FlickControlManager extends ChangeNotifier {
   /// Pause the video.
   Future<void> pause() async {
     await _videoPlayerController?.pause();
-    _flickManager.flickDisplayManager!
-        .handleShowPlayerControls(showWithTimeout: false);
+    _flickManager.flickDisplayManager!.handleShowPlayerControls(showWithTimeout: false);
     _notify();
   }
 
